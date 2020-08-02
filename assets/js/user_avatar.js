@@ -30,4 +30,29 @@ $(function() {
            .cropper(options)
     })
 
+    //3.头像上传
+    $("#btnUpload").on("click",function(){
+        var dataURL = $image
+            .cropper('getCroppedCanvas',{
+                width:100,
+                height:100
+            })
+            .toDataURL('image/png')
+        $.ajax({
+            method:'post',
+            url:'/my/update/avatar',
+            data:{
+                avatar:dataURL
+            },
+            success:function(res){
+              //返回校验
+              if(res.status !==0) {
+                  return layui.layer.msg(res.message)
+              }
+              layui.layer.msg("头像上传成功");
+              window.parent.getUserInfo()  
+            }
+        })    
+    })
+
 })
